@@ -24,6 +24,7 @@ const submit = async () => {
     if (response.status === 200) {
       isSuccess.value = true;
       data.updateCategoryById(props.category.categoryId, name.value);
+      props.closeMethod();
     }
   } catch (e) {
     if (e.response) {

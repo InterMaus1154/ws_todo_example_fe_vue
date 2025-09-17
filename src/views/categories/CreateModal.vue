@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { api } from '@/api/api.js';
 import { useData } from '@/stores/data.js';
 
-defineProps({
+const props = defineProps({
   closeMethod: Function,
 });
 
@@ -24,6 +24,7 @@ const submit = async () => {
       isSuccess.value = true;
       data.addCategory(response.data.category);
       name.value = "";
+      props.closeMethod();
     }
   } catch (e) {
     if (e.response) {

@@ -1,20 +1,13 @@
 <script setup>
 import { ref } from 'vue';
-import { api } from '@/api/api.js';
 import { useData } from '@/stores/data.js';
 import CreateModal from '@/views/todos/CreateModal.vue';
 import TodoCard from '@/components/TodoCard.vue';
 
-
 const isCreateModalOpen = ref(false);
-const isUpdateModalOpen = ref(false);
 
 const closeCreateModal = () => {
   isCreateModalOpen.value = false;
-};
-
-const closeUpdateModal = () => {
-  isUpdateModalOpen.value = false;
 };
 
 const data = useData();

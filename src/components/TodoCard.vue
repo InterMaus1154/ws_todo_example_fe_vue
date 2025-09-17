@@ -1,7 +1,8 @@
 <script setup>
 import { api } from '@/api/api.js';
 import { useData } from '@/stores/data.js';
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
+import UpdateModal from '@/views/todos/UpdateModal.vue';
 
 const props = defineProps({
   todo: Object,
@@ -9,7 +10,13 @@ const props = defineProps({
 
 const data = useData();
 
-const importance = ref(Object.keys(data.importance).find(k => data.importance[k] === props.todo.todoImportance));
+const importance = computed(()=>Object.keys(data.importance).find(k => data.importance[k] === props.todo.todoImportance));
+
+const isUpdateModalOpen = ref(false);
+
+const closeUpdateModal = () => {
+  isUpdateModalOpen.value = false;
+};
 
 const deleteTodo = async () => {
   try {
@@ -78,7 +85,7 @@ const toggleTodoStatus = async () => {
           <template v-if="!props.todo.todoCompleted">Do</template>
           <template v-else>Undo</template>
         </button>
-        <button class="text-sky-500 hover:text-sky-400 cursor-pointer">Edit</button>
+        <button class="text-sky-500 hover:text-sky-400 cursor-pointer" @click="isUpdateModalOpen = true">Edit</button>
         <button class="text-sky-500 hover:text-sky-400 cursor-pointer" @click="deleteTodo">
           Delete
         </button>
@@ -90,4 +97,5 @@ const toggleTodoStatus = async () => {
     </div>
     <p>{{props.todo.todoDescription}}</p>
   </div>
+  <UpdateModal v-if="isUpdateModalOpen" :close-method="closeUpdateModal" :todo="props.todo"/>
 </template>

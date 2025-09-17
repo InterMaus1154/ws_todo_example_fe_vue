@@ -3,26 +3,27 @@ import { reactive, ref } from 'vue';
 import { api } from '@/api/api.js';
 import { useData } from '@/stores/data.js';
 
-defineProps({
+const props = defineProps({
   closeMethod: Function,
+  todo: Object
 });
 
 const isSuccess = ref(false);
 const errors = ref([]);
 
 const form = reactive({
-  categoryId: '',
-  todoTitle: '',
-  todoDescription: '',
-  todoImportance: '',
-  todoDueDate: '',
+  categoryId: props.todo.categoryId,
+  todoTitle: props.todo.todoTitle,
+  todoDescription: props.todo.todoDescription,
+  todoImportance: props.todo.todoImportance,
+  todoDueDate: props.todo.todoDueDate,
 });
 
 const data = useData();
 
 const submit = async () => {
   try {
-    const response = await api.post('/todos', {
+    const response = await api.put(`/todos/${props.todo.todoId}`, {
       categoryId: form.categoryId,
       todoTitle: form.todoTitle,
       todoDescription: form.todoDescription,
@@ -30,12 +31,13 @@ const submit = async () => {
       todoDueDate: form.todoDueDate,
     });
 
-    if (response.status === 201) {
+    if (response.status === 200) {
       isSuccess.value = true;
-      data.todos.push(response.data.todo);
+      data.updateTodoById(props.todo.todoId, response.data.todo);
 
       // reset form fields
       Object.keys(form).forEach((key) => (form[key] = ''));
+      props.closeMethod();
     }
   } catch (e) {
     if (e.response) {
@@ -59,8 +61,8 @@ const submit = async () => {
       >
         X
       </button>
-      <h1 class="text-base text-sky-500 text-center">Add new todo</h1>
-      <p v-if="isSuccess" class="text-green-500 text-center">Todo added</p>
+      <h1 class="text-base text-sky-500 text-center">Update Todo</h1>
+      <p v-if="isSuccess" class="text-green-500 text-center">Todo updated</p>
       <!--errors-->
       <ul v-if="errors.length > 0" class="self-center text-red-500 font-bold">
         <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
@@ -124,7 +126,7 @@ const submit = async () => {
           type="submit"
           class="px-2 py-1 rounded-sm bg-sky-500 hover:bg-sky-400 cursor-pointer text-white font-bold"
         >
-          Add
+          Update
         </button>
       </form>
     </div>

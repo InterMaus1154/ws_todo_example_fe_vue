@@ -3,7 +3,7 @@ import { reactive, ref } from 'vue';
 import { api } from '@/api/api.js';
 import { useData } from '@/stores/data.js';
 
-defineProps({
+const props =  defineProps({
   closeMethod: Function,
 });
 
@@ -34,10 +34,11 @@ const submit = async () => {
 
     if (response.status === 201) {
       isSuccess.value = true;
-      data.todos.push(response.data.todo);
+      data.addTodo(response.data.todo);
 
       // reset form fields
       Object.keys(form).forEach((key) => (form[key] = ''));
+      props.closeMethod();
     }
   } catch (e) {
     if (e.response) {
