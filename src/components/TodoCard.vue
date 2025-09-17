@@ -9,24 +9,46 @@ const props = defineProps({
 const data = useData();
 
 const deleteTodo = async () => {
-
-  try{
-    if(window.confirm("Are you sure to delete this todo?")){
+  try {
+    if (window.confirm('Are you sure to delete this todo?')) {
       await api.delete(`/todos/${props.todo.todoId}`);
       data.removeTodoById(props.todo.todoId);
     }
-  }catch (e){
-    if(e.response){
-      if(e.response.status === 404){
+  } catch (e) {
+    if (e.response) {
+      if (e.response.status === 404) {
         alert("Todo doesn't exist anymore!");
         data.removeTodoById(props.todo.todoId);
-      }else if(e.response.status === 403){
-        alert("Unauthorized!");
-      }else if(e.response.status === 500){
-        alert("Unhandled server error");
+      } else if (e.response.status === 403) {
+        alert('Unauthorized!');
+      } else if (e.response.status === 500) {
+        alert('Unhandled server error');
       }
-    }else{
-      alert("Network error");
+    } else {
+      alert('Network error');
+      console.log(e);
+    }
+  }
+};
+
+const toggleTodoStatus = async () => {
+  try {
+    const response = await api.patch(`/todos/${props.todo.todoId}`);
+    if (response.status === 200) {
+      data.updateTodoById(props.todo.todoId, response.data.todo);
+    }
+  } catch (e) {
+    if (e.response) {
+      if (e.response.status === 404) {
+        alert("Todo doesn't exist anymore!");
+        data.removeTodoById(props.todo.todoId);
+      } else if (e.response.status === 403) {
+        alert('Unauthorized!');
+      } else if (e.response.status === 500) {
+        alert('Unhandled server error');
+      }
+    } else {
+      alert('Network error');
       console.log(e);
     }
   }
@@ -42,10 +64,21 @@ const deleteTodo = async () => {
         <span class="text-gray-400">{{ props.todo.todoDueDate }}</span>
         <span v-if="props.todo.overdue" class="text-red-500 font-bold">!</span>
       </div>
-      <p class="text-center text-gray-600">{{ props.todo.todoTitle }}</p>
+      <p
+        class="text-center text-gray-600"
+        :class="{ 'line-through decoration-2 decoration-green-500': props.todo.todoCompleted }"
+      >
+        {{ props.todo.todoTitle }}
+      </p>
       <div class="justify-self-end flex gap-2 text-sm">
+        <button class="text-sky-500 hover:text-sky-400 cursor-pointer" @click="toggleTodoStatus">
+          <template v-if="!props.todo.todoCompleted">Do</template>
+          <template v-else>Undo</template>
+        </button>
         <button class="text-sky-500 hover:text-sky-400 cursor-pointer">Edit</button>
-        <button class="text-sky-500 hover:text-sky-400 cursor-pointer" @click="deleteTodo">Delete</button>
+        <button class="text-sky-500 hover:text-sky-400 cursor-pointer" @click="deleteTodo">
+          Delete
+        </button>
       </div>
     </div>
   </div>

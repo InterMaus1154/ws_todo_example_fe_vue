@@ -11,7 +11,12 @@ export const useData = defineStore('user_data', () => {
   };
 
   const removeTodoById = (todoId) => {
-    todos.value = todos.value.filter(todo => todo.todoId !== todoId);
+    todos.value = todos.value.filter((todo) => todo.todoId !== todoId);
+  };
+
+  const updateTodoById = (todoId, newTodo) => {
+    const index = todos.value.findIndex((todo) => todo.todoId === todoId);
+    todos.value[index] = newTodo;
   };
 
   const addCategory = (category) => {
@@ -35,6 +40,7 @@ export const useData = defineStore('user_data', () => {
     addTodo,
     removeCategoryById,
     updateCategoryById,
-    removeTodoById
+    removeTodoById,
+    updateTodoById
   };
 });
