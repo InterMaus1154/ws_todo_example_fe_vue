@@ -19,11 +19,19 @@ export const useAuth = defineStore('auth', () => {
     }
   }, {immediate: true});
 
+  const setToken = newToken => {
+    token.value = newToken;
+  }
+
+  const setUser = newUser => {
+    user.value = newUser;
+  }
+
   const logout = () =>{
       token.value = "";
       user.value = null;
       router.push("/login");
   };
 
-  return { token, isLoggedIn, user, logout };
+  return { token, isLoggedIn, user, logout, setToken, setUser };
 });

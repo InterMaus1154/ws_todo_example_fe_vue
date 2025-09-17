@@ -28,8 +28,8 @@ const submit = async () => {
     });
 
     if (response.status === 200) {
-      auth.token = response.data.token;
-      auth.user = response.data.user;
+      auth.setToken(response.data.token);
+      auth.setUser(response.data.user);
     }
     router.push('/');
   } catch (e) {

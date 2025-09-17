@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import CreateModal from '@/views/categories/CreateModal.vue';
 import { api } from '@/api/api.js';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -19,31 +19,23 @@ const closeUpdateModal = () => {
 
 const selectedCategory = ref();
 
-const isLoading = ref(true);
 const data = useData();
-
-onMounted(async () => {
-  try {
-    const response = await api.get('/categories');
-    data.categories = response.data.categories;
-  } catch (e) {
-    alert('Failed to fetch categories');
-    console.log(e);
-  }
-  isLoading.value = false;
-});
 
 const deleteCategory = async (categoryId) => {
   if (window.confirm('Are you sure to delete this category?')) {
     try {
       const response = await api.delete(`/categories/${categoryId}`);
       if (response.status === 204) {
-        data.categories = data.categories.filter((cat) => cat.categoryId !== categoryId);
+        data.removeCategoryById(categoryId);
       }
     } catch (e) {
       if (e.response) {
         if (e.response.status === 403) {
           alert('Unauthorized!');
+        }
+        if(e.response.status === 404){
+          alert("The category no longer exists!");
+          data.categories = data.categories.filter((cat) => cat.categoryId !== categoryId);
         }
       } else {
         alert('Network error');
@@ -55,7 +47,6 @@ const deleteCategory = async (categoryId) => {
 </script>
 
 <template>
-  <LoadingSpinner v-if="isLoading" />
   <div class="flex flex-col gap-4">
     <div class="grid grid-cols-[1fr_auto_1fr]">
       <div></div>
@@ -67,18 +58,18 @@ const deleteCategory = async (categoryId) => {
         +
       </button>
     </div>
-    <div class="grid grid-cols-3 gap-4" v-if="!isLoading">
+    <div class="grid grid-cols-3 gap-4">
       <div
-        class="p-4 border border-gray-200 shadow-sm rounded-sm"
+        class="p-4 border border-gray-200 shadow-sm rounded-sm hover:shadow-md hover:scale-105 transition-all duration-300"
         v-for="category in data.categories"
         :key="category.categoryId"
       >
         <p class="text-center text-gray-600">{{ category.categoryName }}</p>
         <div class="flex gap-2">
-          <button class="text-sky-500 cursor-pointer" @click="deleteCategory(category.categoryId)">
+          <button class="text-sky-500 hover:text-sky-400 cursor-pointer" @click="deleteCategory(category.categoryId)">
             Delete
           </button>
-          <button class="text-sky-500 cursor-pointer" @click="selectedCategory = category; isUpdateModalOpen = true">Edit</button>
+          <button class="text-sky-500 hover:text-sky-400 cursor-pointer" @click="selectedCategory = category; isUpdateModalOpen = true">Edit</button>
         </div>
       </div>
     </div>

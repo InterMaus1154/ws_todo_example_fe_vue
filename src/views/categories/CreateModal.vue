@@ -22,7 +22,7 @@ const submit = async () => {
 
     if (response.status === 201) {
       isSuccess.value = true;
-      data.categories.push(response.data.category);
+      data.addCategory(response.data.category);
       name.value = "";
     }
   } catch (e) {

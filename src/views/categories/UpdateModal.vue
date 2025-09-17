@@ -23,12 +23,17 @@ const submit = async () => {
 
     if (response.status === 200) {
       isSuccess.value = true;
-      const index = data.categories.findIndex(cat => cat.categoryId === props.category.categoryId);
-      data.categories[index].categoryName = name.value;
+      data.updateCategoryById(props.category.categoryId, name.value);
     }
   } catch (e) {
     if (e.response) {
-      alert(e.response.message);
+      if (e.response.status === 403) {
+        alert('Unauthorized!');
+      }
+      if(e.response.status === 404){
+        alert("The category no longer exists!");
+        data.categories = data.categories.filter((cat) => cat.categoryId !== props.category.categoryId);
+      }
     } else {
       alert('Network error');
       console.log(e);

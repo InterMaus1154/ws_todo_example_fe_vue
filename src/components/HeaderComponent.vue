@@ -6,7 +6,11 @@
 
 <template>
   <header class="p-4 flex justify-between gap-4 items-center shadow-sm sticky top-0 left-0 right-0 flex-wrap">
-    <h1 class="font-bold text-sky-500 text-xl">Basic Todo App</h1>
+    <h1 class="font-bold text-sky-500 text-xl">Basic Todo App
+      <template v-if="auth.isLoggedIn">
+         - {{auth.user?.username}}
+      </template>
+    </h1>
     <nav class="flex gap-4 items-center">
       <template v-if="auth.isLoggedIn">
         <RouterLink to="/">Home</RouterLink>
