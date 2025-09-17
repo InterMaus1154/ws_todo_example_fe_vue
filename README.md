@@ -1,35 +1,17 @@
-# ws_todo_example_fe
+# WS Todo Example - Frontend part
 
-This template should help get you started developing with Vue 3 in Vite.
+## Intro
+This frontend Vue app is using the [following api](https://github.com/InterMaus1154/ws_todo_api_example).\
+The aim of this small example to give you an idea what you will need to do in a WorldSkills competition for the "frontend development module".\
+Please note, that this task is very minimalistic, and in a real competition(eg National finals) you are expected to do a lot more.
 
-## Recommended IDE Setup
+## Project description
+This is a minimalistic todo app, with managing categories and todo items, including login and register as well.\
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## How to run this project
+Step 0: Follow the instructions of installing the api from the link above.\
+Clone this repo, then run `npm install` -> `npm run dev`. It will start a dev server at default on `http://localhost:5173`.\
+Note: the URL used for the api is `http://127.0.0.1:8000`, if you need to, you can change it in [api.js](src/api/api.js).
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## Contact
+If you need help regarding any task in the competition, feel free to contact me. You can find my contact methods [here](https://markkiss.netlify.app/#contact).
