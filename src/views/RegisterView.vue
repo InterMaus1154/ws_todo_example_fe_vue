@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { api } from '@/api/api.js';
 import { useAuth } from '@/stores/auth.js';
 import router from '@/router/index.js';
@@ -22,8 +22,8 @@ const submit = async () => {
     });
 
     if (response.status === 201) {
-      auth.token = response.data.token;
-      auth.user = response.data.user;
+      auth.setToken(response.data.token);
+      auth.setUser(response.data.user);
     }
     router.push('/');
   } catch (e) {
@@ -44,7 +44,7 @@ const submit = async () => {
 
 <template>
   <div class="flex flex-col gap-4 justify-center items-center min-h-screen">
-    <LoadingSpinner v-if="isLoading"/>
+    <LoadingSpinner v-if="isLoading" />
     <h1 class="text-center text-2xl text-sky-500 font-bold">Register New User</h1>
     <!--errors-->
     <ul v-if="errors.length > 0" class="self-center text-red-500 font-bold">
@@ -77,7 +77,7 @@ const submit = async () => {
         type="submit"
         class="px-2 py-1 rounded-sm bg-sky-500 hover:bg-sky-400 cursor-pointer text-white font-bold"
       >
-        Login
+        Register
       </button>
     </form>
   </div>

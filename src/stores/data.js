@@ -6,6 +6,18 @@ export const useData = defineStore('user_data', () => {
   const categories = ref([]);
   const importance = ref([]);
 
+  const setTodos = (newTodos) => {
+    todos.value = newTodos;
+  };
+
+  const setCategories = (newCategories) => {
+    categories.value = newCategories;
+  };
+
+  const setImportance = (newImportance) => {
+    importance.value = newImportance;
+  };
+
   const addTodo = (todo) => {
     todos.value.push(todo);
   };
@@ -41,6 +53,9 @@ export const useData = defineStore('user_data', () => {
     removeCategoryById,
     updateCategoryById,
     removeTodoById,
-    updateTodoById
+    updateTodoById,
+    setImportance,
+    setCategories,
+    setTodos
   };
 });
