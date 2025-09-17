@@ -1,12 +1,15 @@
 <script setup>
 import { api } from '@/api/api.js';
 import { useData } from '@/stores/data.js';
+import {ref} from 'vue';
 
 const props = defineProps({
   todo: Object,
 });
 
 const data = useData();
+
+const importance = ref(Object.keys(data.importance).find(k => data.importance[k] === props.todo.todoImportance));
 
 const deleteTodo = async () => {
   try {
@@ -57,7 +60,7 @@ const toggleTodoStatus = async () => {
 
 <template>
   <div
-    class="p-4 border border-gray-200 shadow-sm rounded-sm hover:shadow-md hover:scale-105 transition-all duration-300"
+    class="p-4 flex flex-col gap-2 border border-gray-200 shadow-sm rounded-sm hover:shadow-md hover:scale-105 transition-all duration-300"
   >
     <div class="grid grid-cols-[1fr_auto_1fr] gap-2">
       <div class="flex gap-1">
@@ -81,5 +84,10 @@ const toggleTodoStatus = async () => {
         </button>
       </div>
     </div>
+    <div class="flex justify-between gap-2">
+      <p class="font-bold text-gray-600">{{importance === "None" ? "-" : importance}}</p>
+      <p class="font-bold text-gray-600">{{props.todo.categoryName}}</p>
+    </div>
+    <p>{{props.todo.todoDescription}}</p>
   </div>
 </template>
