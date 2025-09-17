@@ -9,8 +9,12 @@ const props = defineProps({
 const data = useData();
 
 const deleteTodo = async () => {
+
   try{
-    await api.delete(`/todos/${props.todo.todoId}`);
+    if(window.confirm("Are you sure to delete this todo?")){
+      await api.delete(`/todos/${props.todo.todoId}`);
+      data.removeTodoById(props.todo.todoId);
+    }
   }catch (e){
     if(e.response){
       if(e.response.status === 404){
@@ -18,6 +22,8 @@ const deleteTodo = async () => {
         data.removeTodoById(props.todo.todoId);
       }else if(e.response.status === 403){
         alert("Unauthorized!");
+      }else if(e.response.status === 500){
+        alert("Unhandled server error");
       }
     }else{
       alert("Network error");

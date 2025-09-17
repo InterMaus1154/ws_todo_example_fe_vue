@@ -21,6 +21,8 @@ const form = reactive({
 const data = useData();
 
 const submit = async () => {
+  errors.value = [];
+  isSuccess.value = false;
   try {
     const response = await api.post('/todos', {
       categoryId: form.categoryId,

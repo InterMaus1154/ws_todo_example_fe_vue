@@ -25,7 +25,7 @@ const data = useData();
   <!--  <LoadingSpinner v-if="isLoading" />-->
   <div class="grid grid-cols-[1fr_auto_1fr]">
     <div></div>
-    <h1 class="text-sky-500 font-bold text-xl text-center">My Todos</h1>
+    <h1 class="text-sky-500 font-bold text-xl text-center mb-4">My Todos</h1>
     <button
       @click="isCreateModalOpen = true"
       class="justify-self-end w-8 h-8 cursor-pointer text-2xl font-bold text-sky-500 border-2 border-sky-500 rounded-full flex items-center justify-center hover:bg-sky-500 hover:text-white transition-colors"
