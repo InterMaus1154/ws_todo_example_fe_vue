@@ -12,22 +12,16 @@ const isLoading = ref(false);
 
 const auth = useAuth();
 
-onMounted(()=>{
-    if(auth.isLoggedIn){
-      router.push('/');
-    }
-});
-
 const submit = async () => {
   isLoading.value = true;
   errors.value = [];
   try {
-    const response = await api.post('auth/login', {
+    const response = await api.post('auth/register', {
       username: username.value,
       password: password.value,
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       auth.token = response.data.token;
       auth.user = response.data.user;
     }
@@ -51,7 +45,7 @@ const submit = async () => {
 <template>
   <div class="flex flex-col gap-4 justify-center items-center min-h-screen">
     <LoadingSpinner v-if="isLoading"/>
-    <h1 class="text-center text-2xl text-sky-500 font-bold">Login</h1>
+    <h1 class="text-center text-2xl text-sky-500 font-bold">Register New User</h1>
     <!--errors-->
     <ul v-if="errors.length > 0" class="self-center text-red-500 font-bold">
       <li v-for="(error, index) in errors" :key="index">{{ error }}</li>

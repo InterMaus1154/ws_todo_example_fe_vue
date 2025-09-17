@@ -1,8 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
-import CategoriesView from '@/views/CategoriesView.vue';
+import CategoriesView from '@/views/categories/CategoriesView.vue';
 import { useAuth } from '@/stores/auth.js';
 import LoginView from '@/views/LoginView.vue';
+import RegisterView from '@/views/RegisterView.vue';
+import LayoutView from '@/views/LayoutView.vue';
+
+const protectedRoutes = [
+  {
+    path: '/',
+    component: LayoutView,
+    meta: {requiresAuth: true},
+    children: [
+      {
+        path: '/',
+        component: HomeView,
+      },
+      {
+        path: '/categories',
+        component: CategoriesView,
+      }
+    ]
+  }
+];
 
 const router = createRouter({
   linkActiveClass: 'text-sky-500',
@@ -14,15 +34,10 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/',
-      component: HomeView,
-      meta: { requiresAuth: true },
+      path: '/register',
+      component: RegisterView
     },
-    {
-      path: '/categories',
-      component: CategoriesView,
-      meta: { requiresAuth: true },
-    },
+    ...protectedRoutes
   ],
 });
 
