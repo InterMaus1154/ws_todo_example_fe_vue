@@ -1,23 +1,36 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '@/views/HomeView.vue';
+import CategoriesView from '@/views/CategoriesView.vue';
+import { useAuth } from '@/stores/auth.js';
+import LoginView from '@/views/LoginView.vue';
 
 const router = createRouter({
+  linkActiveClass: 'text-sky-500',
+  linkExactActiveClass: 'text-sky-500',
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView,
+      path: '/login',
+      component: LoginView,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: '/',
+      component: HomeView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/categories',
+      component: CategoriesView,
+      meta: { requiresAuth: true },
     },
   ],
-})
+});
 
-export default router
+router.beforeEach((to, from) => {
+  const auth = useAuth();
+  if (to.meta.requiresAuth && !auth.isLoggedIn) {
+    return '/login';
+  }
+});
+
+export default router;
